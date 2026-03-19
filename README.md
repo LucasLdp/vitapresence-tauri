@@ -9,7 +9,6 @@
 **🇧🇷 [Português](#português) · 🇺🇸 [English](#english)**
 
 [![Release](https://img.shields.io/github/v/release/seu-usuario/vitapresence?style=flat-square&color=0050c8)](https://github.com/seu-usuario/vitapresence/releases)
-[![Build](https://img.shields.io/github/actions/workflow/status/seu-usuario/vitapresence/release.yml?style=flat-square)](https://github.com/seu-usuario/vitapresence/actions)
 [![License](https://img.shields.io/badge/license-GPL--3.0-green?style=flat-square)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20Windows%20%7C%20macOS-informational?style=flat-square)](https://github.com/seu-usuario/vitapresence/releases)
 
@@ -61,14 +60,10 @@ O plugin kernel no PS Vita abre um servidor TCP na porta **51966 (0xCAFE)**. A c
 
 Baixe o instalador em [Releases](https://github.com/seu-usuario/vitapresence/releases):
 
-| Plataforma             | Arquivo                        |
-| ---------------------- | ------------------------------ |
-| 🐧 Linux AppImage      | `VitaPresence_*.AppImage`      |
-| 🐧 Linux RPM (Fedora)  | `VitaPresence_*.rpm`           |
-| 🐧 Linux DEB (Ubuntu)  | `VitaPresence_*.deb`           |
-| 🪟 Windows             | `VitaPresence_*_x64-setup.exe` |
-| 🍎 macOS Apple Silicon | `VitaPresence_*_aarch64.dmg`   |
-| 🍎 macOS Intel         | `VitaPresence_*_x64.dmg`       |
+| Plataforma          | Arquivo                   |
+| ------------------- | ------------------------- |
+| 🐧 Linux AppImage   | `VitaPresence_*.AppImage` |
+| 🪟 Windows Portável | `VitaPresence_*_x64.exe`  |
 
 ## Configuração
 
@@ -160,17 +155,6 @@ npm run build
 npm run dev
 ```
 
-## Release automatizada (CI/CD)
-
-Para publicar uma nova versão com binários para todas as plataformas:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-O GitHub Actions compila automaticamente para Linux, Windows e macOS.
-
 ## Créditos e inspirações
 
 Este projeto é um port multiplataforma do **VitaPresence original** e não existiria sem:
@@ -230,14 +214,10 @@ The kernel plugin on your PS Vita opens a TCP server on port **51966 (0xCAFE)**.
 
 Download the installer from [Releases](https://github.com/seu-usuario/vitapresence/releases):
 
-| Platform               | File                           |
-| ---------------------- | ------------------------------ |
-| 🐧 Linux AppImage      | `VitaPresence_*.AppImage`      |
-| 🐧 Linux RPM (Fedora)  | `VitaPresence_*.rpm`           |
-| 🐧 Linux DEB (Ubuntu)  | `VitaPresence_*.deb`           |
-| 🪟 Windows             | `VitaPresence_*_x64-setup.exe` |
-| 🍎 macOS Apple Silicon | `VitaPresence_*_aarch64.dmg`   |
-| 🍎 macOS Intel         | `VitaPresence_*_x64.dmg`       |
+| Platform            | File                      |
+| ------------------- | ------------------------- |
+| 🐧 Linux AppImage   | `VitaPresence_*.AppImage` |
+| 🪟 Windows Portable | `VitaPresence_*_x64.exe`  |
 
 ## Setup
 
@@ -328,17 +308,6 @@ npm run build
 ```bash
 npm run dev
 ```
-
-## Automated releases (CI/CD)
-
-To publish a new release with binaries for all platforms:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-GitHub Actions automatically builds for Linux, Windows and macOS.
 
 ## Credits and inspirations
 
