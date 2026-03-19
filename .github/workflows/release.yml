@@ -63,6 +63,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          NO_STRIP: 1
         with:
           tagName: ${{ github.ref_name }}
           releaseName: "VitaPresence ${{ github.ref_name }}"
@@ -115,7 +116,11 @@ jobs:
         run: npm --prefix ui run build
 
       - name: Build Windows portable exe
-        run: cargo build --manifest-path src-tauri/Cargo.toml --release --target x86_64-pc-windows-msvc
+        uses: tauri-apps/tauri-action@v0.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: --target x86_64-pc-windows-msvc --bundles none
 
       - name: Prepare Windows artifact
         shell: pwsh
