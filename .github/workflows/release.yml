@@ -54,6 +54,9 @@ jobs:
       - name: Install UI dependencies
         run: npm --prefix ui install
 
+      - name: Build UI (production)
+        run: npm --prefix ui run build
+
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0.5
         env:
@@ -66,10 +69,7 @@ jobs:
           releaseBody: |
             ## VitaPresence ${{ github.ref_name }}
 
-            Mostre seu jogo do PS Vita como Discord Rich Presence.
-
             ### Downloads
-            | Plataforma | Arquivo |
             |---|---|
             | 🐧 Linux AppImage | `VitaPresence_*.AppImage` |
             | 🪟 Windows Portable | `VitaPresence_*_x64.exe` |
