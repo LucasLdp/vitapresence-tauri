@@ -3,7 +3,7 @@ name: Build & Release
 on:
   push:
     tags:
-      - 'v*'         
+      - "v*"
   workflow_dispatch:
 
 permissions:
@@ -34,19 +34,19 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      # ── Checkout ──────────────────────────────────────────────────────
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ── Node.js ───────────────────────────────────────────────────────
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: ui/package-lock.json
+          node-version: "20"
 
-      # ── Rust ──────────────────────────────────────────────────────────
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -57,7 +57,6 @@ jobs:
         with:
           workspaces: src-tauri
 
-      # ── Linux system dependencies ─────────────────────────────────────
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-22.04'
         run: |
@@ -70,21 +69,22 @@ jobs:
             patchelf \
             libssl-dev
 
-      # ── Install UI deps ───────────────────────────────────────────────
+      - name: Install root dependencies
+        run: npm install
+
       - name: Install UI dependencies
         run: npm --prefix ui install
 
-      # ── Build ─────────────────────────────────────────────────────────
       - name: Build Tauri app
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@v0.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName:       ${{ github.ref_name }}
-          releaseName:   'VitaPresence ${{ github.ref_name }}'
-          releaseBody:   |
+          tagName: ${{ github.ref_name }}
+          releaseName: "VitaPresence ${{ github.ref_name }}"
+          releaseBody: |
             ## VitaPresence ${{ github.ref_name }}
 
             Mostre seu jogo do PS Vita como Discord Rich Presence.
@@ -92,16 +92,13 @@ jobs:
             ### Downloads
             | Plataforma | Arquivo |
             |---|---|
-            | Linux (AppImage) | `VitaPresence_*.AppImage` |
-            | Linux (Debian/Ubuntu) | `VitaPresence_*.deb` |
-            | Linux (Fedora/RPM) | `VitaPresence_*.rpm` |
-            | Windows | `VitaPresence_*_x64-setup.exe` |
-            | macOS (Apple Silicon) | `VitaPresence_*_aarch64.dmg` |
-            | macOS (Intel) | `VitaPresence_*_x64.dmg` |
-
-            ### Instalação rápida
-            Veja o [README](https://github.com/${{ github.repository }}#readme) para instruções completas.
-          releaseDraft:    false
-          prerelease:      false
-          includeUpdaterJson: false
+            | 🐧 Linux AppImage | `VitaPresence_*.AppImage` |
+            | 🐧 Linux DEB | `VitaPresence_*.deb` |
+            | 🐧 Linux RPM | `VitaPresence_*.rpm` |
+            | 🪟 Windows NSIS | `VitaPresence_*_x64-setup.exe` |
+            | 🪟 Windows MSI | `VitaPresence_*_x64_en-US.msi` |
+            | 🍎 macOS Apple Silicon | `VitaPresence_*_aarch64.dmg` |
+            | 🍎 macOS Intel | `VitaPresence_*_x64.dmg` |
+          releaseDraft: false
+          prerelease: false
           args: --target ${{ matrix.target }}
