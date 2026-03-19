@@ -1,0 +1,13 @@
+{
+  "name": "vitapresence",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "setup": "npm --prefix ui install",
+    "dev":   "npx tauri dev",
+    "build": "npx tauri build"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0"
+  }
+}

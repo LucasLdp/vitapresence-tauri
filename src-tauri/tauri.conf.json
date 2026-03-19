@@ -1,0 +1,48 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "VitaPresence",
+  "version": "1.0.0",
+  "identifier": "com.vitapresence.app",
+  "build": {
+    "frontendDist": "../ui/dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "npm --prefix ui install && npm --prefix ui run dev",
+    "beforeBuildCommand": "npm --prefix ui install && npm --prefix ui run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "VitaPresence",
+        "width": 460,
+        "height": 620,
+        "minWidth": 420,
+        "minHeight": 560,
+        "resizable": true,
+        "center": true,
+        "decorations": true
+      }
+    ],
+    "trayIcon": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true,
+      "menuOnLeftClick": false,
+      "tooltip": "VitaPresence"
+    },
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "rpm",
+      "deb",
+      "appimage"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/icon.png"
+    ]
+  }
+}
