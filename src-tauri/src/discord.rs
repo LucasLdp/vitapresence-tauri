@@ -1,6 +1,9 @@
 // src-tauri/src/discord.rs — Discord RPC via native Unix IPC (zero deps)
+#[cfg(unix)]
 use std::io::{Read, Write};
+#[cfg(unix)]
 use std::os::unix::net::UnixStream;
+#[cfg(unix)]
 use std::time::Duration;
 use serde_json::{json, Value};
 
@@ -53,12 +56,14 @@ fn decode(buf: &[u8]) -> Option<Value> {
     serde_json::from_slice(&buf[8..8 + len]).ok()
 }
 
+#[cfg(unix)]
 pub struct DiscordRpc {
     socket:    Option<UnixStream>,
     client_id: String,
     nonce:     u32,
 }
 
+#[cfg(unix)]
 impl DiscordRpc {
     pub fn new(client_id: String) -> Self {
         Self { socket: None, client_id, nonce: 0 }
@@ -141,7 +146,7 @@ impl DiscordRpc {
             "nonce": self.nonce.to_string(),
         }));
 
-        socket.write_all(&payload).map_err(|e| {
+        socket.write_all(&payload).map_err(|e: std::io::Error| {
             self.socket = None;
             e.to_string()
         })
@@ -156,6 +161,43 @@ impl DiscordRpc {
             "args":  { "pid": std::process::id(), "activity": null },
             "nonce": self.nonce.to_string(),
         }));
-        socket.write_all(&payload).map_err(|e| e.to_string())
+        socket.write_all(&payload).map_err(|e: std::io::Error| e.to_string())
+    }
+}
+
+// Stub implementation for Windows/non-Unix platforms
+#[cfg(not(unix))]
+pub struct DiscordRpc {
+    client_id: String,
+}
+
+#[cfg(not(unix))]
+impl DiscordRpc {
+    pub fn new(client_id: String) -> Self {
+        Self { client_id }
+    }
+
+    pub fn is_connected(&self) -> bool {
+        false
+    }
+
+    pub fn connect(&mut self) -> Result<(), String> {
+        Err("Discord RPC não suportado nesta plataforma".to_string())
+    }
+
+    pub fn disconnect(&mut self) {}
+
+    pub fn set_presence(
+        &mut self,
+        _details:    &str,
+        _state:      Option<&str>,
+        _start_time: Option<i64>,
+        _cover_url:  Option<&str>,
+    ) -> Result<(), String> {
+        Err("Discord RPC não suportado nesta plataforma".to_string())
+    }
+
+    pub fn clear_presence(&mut self) -> Result<(), String> {
+        Err("Discord RPC não suportado nesta plataforma".to_string())
     }
 }
