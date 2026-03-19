@@ -6,7 +6,8 @@
   "build": {
     "frontendDist": "../ui/dist",
     "devUrl": "http://localhost:5173",
-    "beforeDevCommand": "npm --prefix ui install && npm --prefix ui run dev"
+    "beforeDevCommand": "npm --prefix ui install && npm --prefix ui run dev",
+    "beforeBuildCommand": "npm --prefix ui install && npm --prefix ui run build"
   },
   "app": {
     "windows": [
@@ -18,7 +19,8 @@
         "minHeight": 560,
         "resizable": true,
         "center": true,
-        "decorations": true
+        "decorations": true,
+        "visible": false
       }
     ],
     "trayIcon": {
