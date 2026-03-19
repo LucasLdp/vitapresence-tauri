@@ -442,6 +442,22 @@ fn setup_tray(app: &AppHandle) -> tauri::Result<()> {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    #[cfg(target_os = "linux")]
+    {
+        // Improves compatibility for AppImage/WebKit on some GPU/driver stacks.
+        std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+        std::env::set_var("WEBKIT_DISABLE_COMPOSITING_MODE", "1");
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        // Mitigates black-screen issues on some WebView2 + GPU driver combinations.
+        std::env::set_var(
+            "WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS",
+            "--disable-gpu --disable-gpu-compositing",
+        );
+    }
+
     tauri::Builder::default()
         .manage(VitaState(Mutex::new(Inner::new())))
         .plugin(tauri_plugin_shell::init())
